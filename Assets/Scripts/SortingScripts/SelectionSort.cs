@@ -16,13 +16,22 @@ public class SelectionSort : MonoBehaviour
     private int arrayLength;
 
     private int i = -1;
+    private bool pillarBool = true;
 
     void Start()
     {
         sortMainS = FindObjectOfType<SortSelect>();
         pillarCol = GameObject.Find("Sliders");
         numArray = new int[pillarCol.transform.childCount];
-        AssignNumbers();
+    }
+
+    private void Update()
+    {
+        if(GameObject.Find("Algorithm").transform.localPosition.x < 300 && pillarBool)
+        {
+            AssignNumbers();
+            pillarBool = false;
+        }
     }
 
     private void AssignNumbers()
