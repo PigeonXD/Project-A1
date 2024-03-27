@@ -8,6 +8,7 @@ public class SliderScript : MonoBehaviour
     private Slider slider;
 
     // Value vars
+    public float moveSpeed = 0.4f;
     private bool raisePillar = false;
     private int targetValue;
 
@@ -20,16 +21,16 @@ public class SliderScript : MonoBehaviour
         slider = GetComponent<Slider>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (movePil)
         {
-            transform.localPosition = Vector3.Lerp(transform.localPosition, posVec, 0.1f);
+            transform.localPosition = Vector3.Lerp(transform.localPosition, posVec, moveSpeed);
         }
 
         if (raisePillar)
         {
-            slider.value = Mathf.Lerp(slider.value, targetValue, 0.1f);
+            slider.value = Mathf.Lerp(slider.value, targetValue, 0.5f);
         }
     }
 
@@ -45,5 +46,10 @@ public class SliderScript : MonoBehaviour
     {
         posVec = pos;
         movePil = true;
+    }
+
+    public void StopMove()
+    {
+        movePil = false;
     }
 }

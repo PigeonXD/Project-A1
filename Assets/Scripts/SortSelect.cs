@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SortSelect : MonoBehaviour
 {
@@ -65,7 +67,15 @@ public class SortSelect : MonoBehaviour
 
     private void SpawnSortingObject(GameObject SortObject)
     {
-        Instantiate(SortObject, transform.position, Quaternion.identity);
+        if(!CheckIfExists(SortObject)) Instantiate(SortObject, transform.position, Quaternion.identity);
+    }
+
+    private bool CheckIfExists(GameObject obj)
+    {
+        GameObject check = null;
+        check = GameObject.Find(obj.name + "(Clone)");
+        if (check == null) return false;
+        else return true;
     }
 
     public void SelectPreview(GameObject gObj)
@@ -109,6 +119,28 @@ public class SortSelect : MonoBehaviour
         slider2.GetComponent<SliderScript>().Move(swapPos);
         slider1.transform.SetSiblingIndex(inx2);
         slider2.transform.SetSiblingIndex(inx1);
+
+        PillarSelect(inx1, inx2, true);
+    }
+
+    public void PillarSelect(int i1, int i2, bool color)
+    {
+        if (color)
+        {
+            //sliderCol.transform.GetChild(i1).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = Color.cyan;
+            sliderCol.transform.GetChild(i2).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = Color.cyan;
+        }
+        else
+        {
+            //sliderCol.transform.GetChild(i1).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = Color.white;
+            sliderCol.transform.GetChild(i2).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = Color.white;
+        }
+        
+    }
+
+    public void ButtonInteractivity(GameObject button, bool status)
+    {
+        button.GetComponent<Button>().interactable = status;
     }
 
     // Sorting Algorithm Buttons
@@ -117,6 +149,15 @@ public class SortSelect : MonoBehaviour
     {
         MoveTo(algorithmPanel, Vector3.zero);
         SpawnSortingObject(selectionSort);
+        ButtonInteractivity(previewMenu.transform.GetChild(2).gameObject, true);
+        ButtonInteractivity(previewMenu.transform.GetChild(3).gameObject, true);
+    }
+
+    public void AlgorithmPanelOff()
+    {
+        MoveTo(algorithmPanel, new Vector3(700, 0, 0));
+        previewMenu.transform.GetChild(2).GetComponent<Button>().interactable = false;
+        previewMenu.transform.GetChild(3).GetComponent<Button>().interactable = false;
     }
 
     public void DeSelectPreviewButton()
@@ -126,5 +167,19 @@ public class SortSelect : MonoBehaviour
         ScaleTo(currentPreview, new Vector3(0.95f, 0.95f, 1));
         currentPreview = null;
         lockScroll = false;
+        ButtonInteractivity(previewMenu.transform.GetChild(2).gameObject, false);
+        ButtonInteractivity(previewMenu.transform.GetChild(3).gameObject, false);
+    }
+
+    public void SpeedSliderUpdate()
+    {
+        GameObject speedSlider = GameObject.Find("SpeedSlider");
+        speedSlider.transform.GetChild(4).GetComponent<Text>().text = speedSlider.GetComponent<Slider>().value.ToString() + "x";
+        for(int i = 0; i < 12; i++)
+        {
+            SliderScript sliderS = sliderCol.transform.GetChild(i).GetComponent<SliderScript>();
+            if ((speedSlider.GetComponent<Slider>().value * 0.05f) > 0.25f) sliderS.moveSpeed = speedSlider.GetComponent<Slider>().value * 0.06f;
+            else sliderS.moveSpeed = 0.25f;
+        }
     }
 }
