@@ -18,6 +18,15 @@ public class SortSelect : MonoBehaviour
 
     // Algorithm Gameobjects
     [SerializeField] GameObject selectionSort;
+    [SerializeField] GameObject bubbleSort;
+    [SerializeField] GameObject insertionSort;
+    [SerializeField] GameObject mergeSort;
+    [SerializeField] GameObject quickSort;
+    [SerializeField] GameObject heapSort;
+    [SerializeField] GameObject countingSort;
+    [SerializeField] GameObject radixSort;
+    [SerializeField] GameObject bucketSort;
+    [SerializeField] GameObject cycleSort;
 
     private Vector3 swapPos; // Variable used for swaping pillars
     private GameObject algorithmPanel; // Panel to display Algorithm behaviour
@@ -75,7 +84,11 @@ public class SortSelect : MonoBehaviour
         GameObject check = null;
         check = GameObject.Find(obj.name + "(Clone)");
         if (check == null) return false;
-        else return true;
+        else
+        {
+            Destroy(check); // I did a little bit of trolling
+            return false;
+        }
     }
 
     public void SelectPreview(GameObject gObj)
@@ -96,6 +109,7 @@ public class SortSelect : MonoBehaviour
     {
         int i = -1;
         StartCoroutine(PillarPrepCR(min, max, array, i));   // Initiate Coroutine
+        ButtonInteractivity(previewMenu.transform.GetChild(1).transform.GetChild(0).gameObject, false);
     }
 
     private IEnumerator PillarPrepCR(int min, int max, int[] array, int idx)
@@ -107,7 +121,12 @@ public class SortSelect : MonoBehaviour
             yield return new WaitForSecondsRealtime(0.1f);          // send data to individual slider objects ^
             StartCoroutine(PillarPrepCR(min, max, array, idx));     // Repeat until all sliders get data
         }
-        else yield return null;
+        else 
+        {
+            ButtonInteractivity(previewMenu.transform.GetChild(1).transform.GetChild(0).gameObject, true);
+            yield return null;
+        } 
+                
     }
 
     public void MovePillars(int inx1, int inx2)
@@ -141,6 +160,8 @@ public class SortSelect : MonoBehaviour
     public void ButtonInteractivity(GameObject button, bool status)
     {
         button.GetComponent<Button>().interactable = status;
+        if (status) button.transform.GetChild(0).GetComponent<Text>().color = Color.white;
+        else if (!status) button.transform.GetChild(0).GetComponent<Text>().color = Color.gray;
     }
 
     // Sorting Algorithm Buttons
@@ -149,15 +170,19 @@ public class SortSelect : MonoBehaviour
     {
         MoveTo(algorithmPanel, Vector3.zero);
         SpawnSortingObject(selectionSort);
-        ButtonInteractivity(previewMenu.transform.GetChild(2).gameObject, true);
-        ButtonInteractivity(previewMenu.transform.GetChild(3).gameObject, true);
+        ButtonInteractivity(previewMenu.transform.GetChild(1).transform.GetChild(1).gameObject, true);
+        ButtonInteractivity(previewMenu.transform.GetChild(1).transform.GetChild(2).gameObject, true);
+        previewMenu.transform.GetChild(1).transform.GetChild(3).transform.GetChild(3).GetComponent<Text>().color = Color.white;
+        previewMenu.transform.GetChild(1).transform.GetChild(3).transform.GetChild(4).GetComponent<Text>().color = Color.white;
     }
 
     public void AlgorithmPanelOff()
     {
         MoveTo(algorithmPanel, new Vector3(700, 0, 0));
-        previewMenu.transform.GetChild(2).GetComponent<Button>().interactable = false;
-        previewMenu.transform.GetChild(3).GetComponent<Button>().interactable = false;
+        ButtonInteractivity(previewMenu.transform.GetChild(1).transform.GetChild(1).gameObject, false);
+        ButtonInteractivity(previewMenu.transform.GetChild(1).transform.GetChild(2).gameObject, false);
+        previewMenu.transform.GetChild(1).transform.GetChild(3).transform.GetChild(3).GetComponent<Text>().color = Color.gray;
+        previewMenu.transform.GetChild(1).transform.GetChild(3).transform.GetChild(4).GetComponent<Text>().color = Color.gray;
     }
 
     public void DeSelectPreviewButton()
@@ -167,8 +192,9 @@ public class SortSelect : MonoBehaviour
         ScaleTo(currentPreview, new Vector3(0.95f, 0.95f, 1));
         currentPreview = null;
         lockScroll = false;
-        ButtonInteractivity(previewMenu.transform.GetChild(2).gameObject, false);
-        ButtonInteractivity(previewMenu.transform.GetChild(3).gameObject, false);
+        ButtonInteractivity(previewMenu.transform.GetChild(1).transform.GetChild(1).gameObject, false);
+        ButtonInteractivity(previewMenu.transform.GetChild(1).transform.GetChild(2).gameObject, false);
+
     }
 
     public void SpeedSliderUpdate()

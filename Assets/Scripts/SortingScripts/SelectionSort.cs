@@ -75,6 +75,7 @@ public class SelectionSort : MonoBehaviour
     public void StartSortingCoroutine()
     {
         StartCoroutine(SortStart());
+        sortMainS.ButtonInteractivity(GameObject.Find("StartSort").gameObject, false);
     }
 
     private IEnumerator SortStart()
@@ -105,27 +106,6 @@ public class SelectionSort : MonoBehaviour
         i = -1;
         for (int k = 0; k < arrayLength - 1; k++) pillarCol.transform.GetChild(k).GetComponent<SliderScript>().StopMove();
         for (int j = 0; j < arrayLength - 1; j++) pillarCol.transform.GetChild(j).localPosition = new Vector3(-150 + (50 * j), 0, 0);
-        sortMainS.ButtonInteractivity(GameObject.Find("StartSort").gameObject, false);
         Destroy(gameObject);
-    }
-
-    private void UpdateText() // No longer needed due to proper feature implementation
-    {
-        for(int i = 0; i < arrayLength; i++)
-        {
-            Text pilText = pillarCol.transform.GetChild(i).GetComponentInChildren<Text>();
-            pilText.text = numArray[i].ToString();
-        }
-    }
-
-    private void displayArray(int inx) // debug tool
-    {
-        string str = " ";
-        for(int i = 0; i < arrayLength; i++)
-        {
-            str += numArray[i];
-            str += ", ";
-        }
-        Debug.Log(str + " | " + inx + " " + i);
     }
 }
