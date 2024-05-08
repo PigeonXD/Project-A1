@@ -17,6 +17,7 @@ public class SelectionSort : MonoBehaviour
         mainS = FindObjectOfType<SortSelect>();
         mainSortS = gameObject.GetComponent<BaseSortScript>();
         arrayLength = mainSortS.numArray.Length;
+        mainSortS.arrowMode = BaseSortScript.arrowModes.LeftToRight;
     }
 
     public void StartSortingCoroutine()
@@ -36,10 +37,13 @@ public class SelectionSort : MonoBehaviour
             {
                 if (mainSortS.numArray[j] < mainSortS.numArray[minInx]) minInx = j; // Find lowest number
             }
-            swapStore = mainSortS.numArray[minInx];                       // |
-            mainSortS.numArray[minInx] = mainSortS.numArray[mainSortS.i];                     // Swap values in the array
-            mainSortS.numArray[mainSortS.i] = swapStore;                            // |
-            mainS.MovePillars(minInx, mainSortS.i);
+            if(minInx != mainSortS.i)
+            {
+                swapStore = mainSortS.numArray[minInx];                                 // |
+                mainSortS.numArray[minInx] = mainSortS.numArray[mainSortS.i];           // Swap values in the array
+                mainSortS.numArray[mainSortS.i] = swapStore;                            // |
+                mainS.MovePillars(minInx, mainSortS.i);
+            }
             aSpeed = GameObject.Find("SpeedSlider").GetComponent<Slider>().value;
             yield return new WaitForSecondsRealtime(1 - ((aSpeed - 1) * 0.1f));
             mainS.PillarSelect(minInx, mainSortS.i, false);

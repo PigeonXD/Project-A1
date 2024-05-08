@@ -34,18 +34,39 @@ public class SliderScript : MonoBehaviour
         }
     }
 
+    private bool AltPillarAlignment()
+    {
+        if (GameObject.Find("CountingSort(Clone)") != null || GameObject.Find("HeapSort(Clone)") != null) return true;
+        else return false;
+    }
+
     public void SliderPrep2(int min, int max, int target)
     {
-        slider.minValue = min; 
-        slider.maxValue = max;
-        targetValue = target;
-        raisePillar = true;
+        if (AltPillarAlignment())
+        {
+            slider.minValue = min / 2;
+            slider.maxValue = max;
+            targetValue = target / 2;
+            raisePillar = true;
+        }
+        else
+        {
+            slider.minValue = min;
+            slider.maxValue = max;
+            targetValue = target;
+            raisePillar = true;
+        }
     }
 
     public void Move(Vector3 pos)
     {
         posVec = pos;
         movePil = true;
+    }
+
+    public void MoveInstant(Vector3 pos)
+    {
+        transform.localPosition = pos;
     }
 
     public void StopMove()

@@ -13,42 +13,41 @@ public class ImageViewerEventScript : MonoBehaviour
     private GameObject nextB;
     private Text pageNumText;
 
-    private Sprite[] spriteArray;
-    [SerializeField] Sprite[] selectionSortSpriteArray;
+    // Description Text Variables
+    private GameObject textCol;
+
+    // Sprite Variables
+    [SerializeField] Sprite[] spriteArray;
 
     void Start()
     {
-        LoadSprites();
-        spriteArrayLength = spriteArray.Length - 1;
-        imageDisplay = transform.GetChild(4).GetComponent<Image>();
-        imageDisplay.color = transparent;
-
-        prevB = transform.GetChild(2).gameObject;
-        nextB = transform.GetChild(1).gameObject;
-        pageNumText = GameObject.Find("ImageNum").GetComponent<Text>();
-        UpdateText();
+        // Load Description Text
+        textCol = transform.GetChild(5).gameObject;
+        // The Rest Is in UpdateText(); ------------------------------------
+                                                                        // |
+        // Load Description Images                                      // | 
+        spriteArrayLength = spriteArray.Length - 1;                     // |
+        imageDisplay = transform.GetChild(4).GetComponent<Image>();     // |
+        imageDisplay.color = transparent;                               // |
+                                                                        // |
+        // Load UI                                                      // |
+        prevB = transform.GetChild(2).gameObject;                       // |
+        nextB = transform.GetChild(1).gameObject;                       // |
+        pageNumText = transform.GetChild(3).GetComponent<Text>();       // |
+        UpdateText(); // <--------------------------------------------------
         UpdateDisplayImage();
-    }
-
-    private void LoadSprites()
-    {
-        switch (sortTypeIndex)
-        {
-            case 0: spriteArray = selectionSortSpriteArray; break;
-            case 1: break;
-            case 2: break;
-            case 3: break;
-            case 4: break;
-            case 5: break;
-            case 6: break;
-            case 7: break;
-            case 8: break;
-            case 9: break;
-        }
     }
 
     private void UpdateDisplayImage()
     {
+        if(spriteArrayLength == -1)
+        {
+            prevB.GetComponent<Image>().color = grayedOut;
+            nextB.GetComponent<Image>().color = grayedOut;
+            nextB.GetComponent<Button>().interactable = false;
+            prevB.GetComponent<Button>().interactable = false;
+        }
+
         if (currentImage > -1) imageDisplay.sprite = spriteArray[currentImage];
         if(currentImage == -1)
         {
@@ -94,6 +93,11 @@ public class ImageViewerEventScript : MonoBehaviour
     private void UpdateText()
     {
         pageNumText.text = (currentImage + 2) + "/" + (spriteArrayLength + 2);
-    }
 
+        for (int i = 0; i < textCol.transform.childCount; i++)
+        {
+            textCol.transform.GetChild(i).gameObject.SetActive(false);
+        }
+        textCol.transform.GetChild(currentImage + 1).gameObject.SetActive(true);
+    }
 }
