@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Burst.Intrinsics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -66,7 +62,7 @@ public class QuickSort : MonoBehaviour
     {
         // Choosing the pivot
         int pivot = mainSortS.numArray[high];
-        mainS.PillarSelect(high, high, true);
+        //mainS.PillarSelect(high, high, true);
         // Index of smaller element and indicates
         // the right position of pivot found so far
         int i = (low - 1);
@@ -98,6 +94,7 @@ public class QuickSort : MonoBehaviour
         mainSortS.numArray[i] = mainSortS.numArray[j];
         mainSortS.numArray[j] = temp;
         mainS.MovePillars(i, j);
+        mainS.PillarSelect(i, j, false);
     }
     private void PrintArray() // Debug Function
     {

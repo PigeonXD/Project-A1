@@ -292,6 +292,7 @@ public class SortSelect : MonoBehaviour
         ButtonInteractivity(previewMenu.transform.GetChild(1).transform.GetChild(1).gameObject, false);
         ButtonInteractivity(previewMenu.transform.GetChild(1).transform.GetChild(2).gameObject, false);
         DebugTextSwitch(false);
+        if (startSortObj != null) Destroy(startSortObj);
     }
 
     public void SpeedSliderUpdate()

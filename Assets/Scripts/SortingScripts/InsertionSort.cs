@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class InsertionSort : MonoBehaviour
@@ -44,6 +43,7 @@ public class InsertionSort : MonoBehaviour
                 }
                 aSpeed = GameObject.Find("SpeedSlider").GetComponent<Slider>().value;
                 yield return new WaitForSecondsRealtime(1 - ((aSpeed - 1) * 0.1f));
+                mainSortS.i++;
                 mainSortS.numArray[j + 1] = key;
             }
         }

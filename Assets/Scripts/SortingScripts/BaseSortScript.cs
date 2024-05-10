@@ -11,7 +11,7 @@ public class BaseSortScript : MonoBehaviour
     private bool pillarBool = true;
 
     private GameObject arrow;
-    public arrowModes arrowMode = arrowModes.LeftToRight;
+    public arrowModes arrowMode = arrowModes.Invisible;
     public enum arrowModes
     {
         LeftToRight,
@@ -70,7 +70,7 @@ public class BaseSortScript : MonoBehaviour
     }
     private void Invisible_ArrowMode() // Hides the arrow
     {
-        arrow.transform.localPosition = Vector3.Lerp(arrow.transform.localPosition, new Vector3(-150, -350, 0), 0.3f);
+        arrow.transform.localPosition = Vector3.Lerp(arrow.transform.localPosition, new Vector3(-150, -450, 0), 0.3f);
     }
 
     private void AssignNumbers()
@@ -105,6 +105,7 @@ public class BaseSortScript : MonoBehaviour
         PillarPosReset();
         Destroy(gameObject);
     }
+
     public void ResetPillarsCounting()
     {
         i = -1;
